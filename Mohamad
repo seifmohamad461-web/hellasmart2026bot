@@ -1,0 +1,36 @@
+
+import os
+import requests
+from flask import Flask, request
+
+app = Flask(__name__)
+TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
+API = f"https://api.telegram.org/bot{TOKEN}"
+
+@app.route("/", methods=["GET"])
+def home():
+    return "HellaSmart is running!"
+
+@app.route("/webhook", methods=["POST"])
+def webhook():
+    data = request.get_json(silent=True) or {}
+    message = data.get("message", {})
+    chat = message.get("chat", {})
+    text = message.get("text", "")
+
+    if chat.get("id") and text:
+        reply = (
+            "أهلاً بك في HellaSmart | حلّها 🤖\n\n"
+            "أنا مساعدك لاختيار أفكار المشاريع وتعلّم مهارات مفيدة.\n"
+            "اكتب سؤالك وسأحاول مساعدتك."
+        )
+        requests.post(
+            f"{API}/sendMessage",
+            json={"chat_id": chat["id"], "text": reply},
+            timeout=10
+        )
+
+    return {"ok": True}
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
