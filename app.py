@@ -59,3 +59,4 @@ def webhook_info():
         "token_configured": bool(TOKEN)
     }
     
+@app.route("/version") وreturn "HELLASMART-V2", 200؟
