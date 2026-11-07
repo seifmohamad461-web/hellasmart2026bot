@@ -33,3 +33,9 @@ def webhook():
         )
 
     return "OK", 200
+@app.route("/webhook-info")
+def webhook_info():
+    return {
+        "webhook_route": "/webhook",
+        "token_configured": bool(TOKEN)
+    }
