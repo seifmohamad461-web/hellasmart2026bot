@@ -9,6 +9,7 @@ logging.basicConfig(level=logging.INFO)
 
 TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 
+TOKEN = TOKEN.strip() if TOKEN else None
 @app.route("/")
 def home():
     return "HellaSmart bot is running!", 200
